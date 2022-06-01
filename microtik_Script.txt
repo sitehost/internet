@@ -1,0 +1,16 @@
+/interface lte apn add name="T-Mobile" apn="fast.t-mobile.com" use-peer-dns=yes add-default-route=yes default-route-distance=1
+/interface lte apn add name="T-Mobile Static" apn="b2b.static" use-peer-dns=yes add-default-route=yes default-route-distance=1 ip-type=ipv4
+/interface lte apn add name="AT&T 5G" apn="enhancedphone" use-peer-dns=yes add-default-route=yes default-route-distance=1
+/interface lte apn add name="AT&T LTE Broadband" apn="broadband" use-peer-dns=yes add-default-route=yes default-route-distance=1
+/interface lte apn add name="AT&T NXTGENPHONE" apn="NXTGENPHONE" use-peer-dns=yes add-default-route=yes default-route-distance=1
+/interface lte apn add name="AT&T Phone" apn="phone" use-peer-dns=yes add-default-route=yes default-route-distance=1
+/interface lte apn add name="Verizon" apn="vzwinternet" use-peer-dns=yes add-default-route=yes default-route-distance=1
+/interface lte apn add name="AT&T AML" apn="vpn.accessmylan.net" authentication="pap" user="data" password="data" use-peer-dns=yes add-default-route=yes default-route-distance=1
+/interface lte apn add name="AT&T 30691.mcs" apn="30691.mcs" use-peer-dns=yes add-default-route=yes default-route-distance=1
+/interface lte set [find apn-profiles=T-Mobile]
+/interface lte set 0 allow-roaming=yes
+/interface lte set 0 network-mode=lte
+/interface lte set 0 mtu=1380
+/ip firewall nat add action=masquerade chain=srcnat out-interface=lte1
+/ip firewall mangle add comment="MGC" action=change-ttl chain=prerouting new-ttl=set:65 in-interface=lte1 passthrough=yes
+/ip firewall mangle add comment="MGC" action=change-ttl chain=postrouting new-ttl=set:65 passthrough=yes
